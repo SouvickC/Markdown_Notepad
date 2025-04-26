@@ -18,11 +18,7 @@
 
 ## Architecture Overview
 
-### [Chrome Extension Frontend]
-       ↓
-### [Python Flask Proxy Server]
-       ↓
-### [Ollama Server with Gamma 1B Model]
+![alt text](image-2.png)
 
 ---
 
