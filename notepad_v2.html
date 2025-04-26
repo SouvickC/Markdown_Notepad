@@ -6,93 +6,89 @@
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     #toolbar { margin-bottom: 10px; }
-    #toolbar input, #toolbar button { margin-right: 10px; padding: 5px; }
-    #editor { width: 100%; height: 70vh; border: 1px solid #ccc; padding: 10px; overflow-y: auto; }
+    #toolbar button { margin-right: 10px; padding: 5px; }
+    #editor { width: 100%; height: 80vh; border: 1px solid #ccc; padding: 10px; overflow-y: auto; }
     #status { color: green; margin-top: 10px; }
   </style>
 </head>
 <body>
   <h1>📝 Rich Text Note App</h1>
   <div id="toolbar">
-    <label for="pathInput">Save Path:</label>
-    <input id="pathInput" type="text" placeholder="Enter folder path" />
-    <button id="saveBtn">Save Now</button>
-    <span>Use <strong>Ctrl+B</strong> for Bold, <strong>Ctrl+H</strong> for Highlight.</span>
+    <button id="pickFolderBtn">Select Save Folder</button>
+    <span id="sessionInfo">Initializing...</span>
   </div>
-  <div id="editor" contenteditable="true"></div>
+  <div id="editor" contenteditable="true" placeholder="Start typing..."></div>
   <div id="status"></div>
 
   <script>
-    // Default save path (optional preset)
-    const DEFAULT_SAVE_PATH = 'D:\Documents_D';
+    // Running on localhost: Uses File System Access API for direct writes
 
     const editor = document.getElementById('editor');
     const status = document.getElementById('status');
-    const pathInput = document.getElementById('pathInput');
-    const saveBtn = document.getElementById('saveBtn');
+    const sessionInfo = document.getElementById('sessionInfo');
+    const pickFolderBtn = document.getElementById('pickFolderBtn');
+
+    let folderHandle;
+    let sessionFilename;
     let saveTimeout;
 
-    // Initialize and store path
-    pathInput.value = localStorage.getItem('rich_note_path') || DEFAULT_SAVE_PATH;
-    pathInput.addEventListener('change', () => {
-      localStorage.setItem('rich_note_path', pathInput.value);
-      status.textContent = `Path set to ${pathInput.value}`;
-    });
-
-    // Restore content on load
-    window.addEventListener('DOMContentLoaded', () => {
-      editor.innerHTML = localStorage.getItem('rich_note_html') || '';
-      status.textContent = editor.innerHTML ? 'Restored saved content.' : '';
-    });
-
-    // Save document (download .doc file)
-    function saveDoc() {
-      const htmlContent = editor.innerHTML;
-      localStorage.setItem('rich_note_html', htmlContent);
-
+    // Initialize session file name
+    function initSession() {
       const now = new Date();
       const timestamp = now.toISOString().replace(/[:.]/g, '_');
-      const filename = `note_${timestamp}.doc`;
-      const fullHtml = `<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>${htmlContent}</body></html>`;
-      const blob = new Blob([fullHtml], { type: 'application/msword' });
-
-      // Trigger download
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(a.href);
-
-      const savePath = pathInput.value.trim() || '[Downloads folder]';
-      status.textContent = `Saved to ${savePath} as ${filename} at ${now.toLocaleTimeString()}`;
+      sessionFilename = `note_${timestamp}.doc`;
+      sessionInfo.textContent = `Session file: ${sessionFilename}`;
     }
 
-    // Debounced autosave
+    // Prompt user to select folder (user gesture)
+    pickFolderBtn.addEventListener('click', async () => {
+      try {
+        folderHandle = await window.showDirectoryPicker();
+        status.textContent = 'Folder selected: ' + folderHandle.name;
+        // First save immediately after folder chosen
+        saveDoc();
+      } catch (err) {
+        console.error('Folder selection cancelled or failed', err);
+        status.textContent = 'Folder selection required to save.';
+      }
+    });
+
+    // Save document content to file in chosen folder
+    async function saveDoc() {
+      if (!folderHandle) return;
+      const htmlContent = editor.innerHTML;
+      const fullHtml = `<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>${htmlContent}</body></html>`;
+      try {
+        const fileHandle = await folderHandle.getFileHandle(sessionFilename, { create: true });
+        const writable = await fileHandle.createWritable();
+        await writable.write(fullHtml);
+        await writable.close();
+        status.textContent = `Autosaved at ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        console.error('Error writing file', err);
+        status.textContent = 'Error saving file.';
+      }
+    }
+
+    // Debounced autosave: save 2s after last input
     editor.addEventListener('input', () => {
       clearTimeout(saveTimeout);
       saveTimeout = setTimeout(saveDoc, 2000);
     });
 
-    // Manual save
-    saveBtn.addEventListener('click', saveDoc);
+    // Final save on closing the page
+    window.addEventListener('beforeunload', saveDoc);
 
-    // Keyboard shortcuts
+    // Ctrl+B for bold
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'b') {
         e.preventDefault();
         document.execCommand('bold', false, null);
       }
-      if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'h') {
-        e.preventDefault();
-        if (document.queryCommandSupported && document.queryCommandSupported('hiliteColor')) {
-          document.execCommand('hiliteColor', false, 'yellow');
-        } else {
-          document.execCommand('backColor', false, 'yellow');
-        }
-      }
     });
+
+    // Kick off session
+    window.addEventListener('DOMContentLoaded', initSession);
   </script>
 </body>
 </html>
