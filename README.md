@@ -18,11 +18,11 @@
 
 ## Architecture Overview
 
-[Chrome Extension Frontend]
+### [Chrome Extension Frontend]
        ↓
-[Python Flask Proxy Server]
+### [Python Flask Proxy Server]
        ↓
-[Ollama Server with Gamma 1B Model]
+### [Ollama Server with Gamma 1B Model]
 
 ---
 
