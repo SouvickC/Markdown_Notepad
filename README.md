@@ -45,3 +45,66 @@ Make sure you have installed:
 ```bash
 git clone https://github.com/your-username/markdown-notepad.git
 cd markdown-notepad
+
+### 2. Install Python Dependencies
+
+```bash
+pip install flask flask-cors requests
+```
+
+These libraries are required to run the local Flask proxy server.
+
+### 3. Start the Flask Proxy Server
+
+Inside your project folder, run:
+
+```bash
+python proxy_server.py
+```
+
+You should see:
+
+```plaintext
+* Running on http://127.0.0.1:5000/ 
+* (Press CTRL+C to quit)
+```
+![alt text](image.png)
+
+ Your proxy server is now ready and listening on port 5000.
+
+### 4. Start Ollama Server and Load Gamma 3B Model
+
+In a separate terminal window:
+
+```bash
+ollama serve
+```
+
+or directly run:
+
+```bash
+ollama run gamma:3b
+```
+
+ This ensures that the LLM is ready to accept summarization requests.
+
+### 5. Load Extension in Chrome Browser
+
+Open Chrome and visit: `chrome://extensions/`
+
+Enable Developer Mode (top right corner).
+
+Click **Load Unpacked**.
+
+Select the folder where you cloned this repo (`markdown-notepad/`).
+
+ Your extension should now appear on the Chrome Extensions page.
+
+### 6. Use The Extension
+
+Click on the extension icon.
+
+Start typing your notes in Markdown format.
+
+Click "Generate Summary" to summarize the notes instantly, even offline!
+
