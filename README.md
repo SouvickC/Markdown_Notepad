@@ -1,4 +1,4 @@
-# Offline Markdown Notepad with Summarizer
+# Offline Markdown Notepad with LLM Summarizer
 
 **Markdown Notepad**, a lightweight **offline-first** note-taking Chrome Extension that allows you to write notes in Markdown and instantly generate **AI-powered summaries** — **without any internet connection**.
 
