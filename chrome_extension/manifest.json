@@ -1,20 +1,21 @@
 {
-    "manifest_version": 3,
-    "name": "Markdown Notepad",
-    "version": "1.0",
-    "description": "A basic note-taking app extension.",
-    "action": {
-      "default_popup": "notepad_v3.html",
-      "default_icon": {
-        "16": "icon1.png",
-        "48": "icon1.png",
-        "128": "icon1.png"
-      }
-    },
-    "icons": {
+  "manifest_version": 3,
+  "name": "Markdown Notepad",
+  "version": "1.0",
+  "description": "Minimalist markdown notepad extension.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
       "16": "icon1.png",
       "48": "icon1.png",
       "128": "icon1.png"
     }
+  },
+  "icons": {
+    "16": "icon1.png",
+    "48": "icon1.png",
+    "128": "icon1.png"
   }
-  
+}
