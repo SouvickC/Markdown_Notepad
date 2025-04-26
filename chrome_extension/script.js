@@ -49,7 +49,7 @@ async function summarizeNote() {
       },
       body: JSON.stringify({
         model: "gemma3:1b-it-qat",
-        prompt: `Summarize the following text:\n\n${noteContent}`,
+        prompt: `Summarize the following text and no bold or italics in the answer:\n\n${noteContent}`, // here we can give custom command for the LLM we are using
         stream: false
       })
     });
