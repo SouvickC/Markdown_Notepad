@@ -45,6 +45,8 @@ Make sure you have installed:
 ```bash
 git clone https://github.com/your-username/markdown-notepad.git
 cd markdown-notepad
+```
+
 
 ### 2. Install Python Dependencies
 
@@ -72,7 +74,7 @@ You should see:
 
  Your proxy server is now ready and listening on port 5000.
 
-### 4. Start Ollama Server and Load Gamma 3B Model
+### 4. Start Ollama Server and Load Gamma 1B Model
 
 In a separate terminal window:
 
@@ -83,28 +85,28 @@ ollama serve
 or directly run:
 
 ```bash
-ollama run gamma:3b
+ollama run gamma:1b
 ```
 
  This ensures that the LLM is ready to accept summarization requests.
 
 ### 5. Load Extension in Chrome Browser
 
-Open Chrome and visit: `chrome://extensions/`
+- Open Chrome and visit: `chrome://extensions/`
 
-Enable Developer Mode (top right corner).
+- Enable Developer Mode (top right corner).
 
-Click **Load Unpacked**.
+- Click **Load Unpacked**.
 
-Select the folder where you cloned this repo (`markdown-notepad/`).
+- Select the folder where you cloned this repo (`markdown-notepad/`).
 
- Your extension should now appear on the Chrome Extensions page.
+- Your extension should now appear on the Chrome Extensions page.
 
 ### 6. Use The Extension
 
-Click on the extension icon.
+- Click on the extension icon.
 
-Start typing your notes in Markdown format.
+- Start typing your notes in Markdown format.
 
-Click "Generate Summary" to summarize the notes instantly, even offline!
+- Click "Generate Summary" to summarize the notes instantly, even offline!
 
