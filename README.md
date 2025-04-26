@@ -2,7 +2,7 @@
 
 Welcome to **Markdown Notepad**, a lightweight **offline-first** note-taking Chrome Extension that allows you to write notes in Markdown and instantly generate **AI-powered summaries** — **without any internet connection**.
 
-[Markdown Notepad Logo](chrome_extension/icon.png)
+[Markdown Notepad Logo](icon.png)
 
 ---
 
@@ -66,7 +66,7 @@ You should see:
 
 ```plaintext
 * Running on http://127.0.0.1:5000/ 
-* (Press CTRL+C to quit)
+* Press CTRL+C to quit
 ```
 ![alt text](image.png)
 
