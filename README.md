@@ -10,7 +10,7 @@
 
 -  **Markdown Support**: Write notes with basic Markdown formatting (bold, italic, headers, lists).
 -  **Instant Summarization**: Summarize your notes using a local **gemma3:1b-it-qat LLM** (downloaded from Ollama).
--  **Fully Offline**:  No internet required. Data never leaves your machine.
+-  **Fully Offline**:  No internet required.
 -  **Save Notes**: One-click export as `.md` files.
 
 
